@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuickPuzzle.Test.Domain\QuickPuzzle.Test.Domain.csproj" />
+    <ProjectReference Include="..\QuickPuzzle.Test.EntityFrameworkCore\QuickPuzzle.Test.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\QuickPuzzle.Test.Application.Contracts\QuickPuzzle.Test.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\framework\QuickPuzzle.EntityFactory\QuickPuzzle.EntityFactory.csproj" />
   </ItemGroup>
 
   <ItemGroup>

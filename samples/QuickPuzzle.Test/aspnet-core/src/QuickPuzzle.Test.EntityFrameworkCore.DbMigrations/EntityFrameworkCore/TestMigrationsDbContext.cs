@@ -46,6 +46,10 @@ namespace QuickPuzzle.Test.EntityFrameworkCore
             builder.ConfigureTenantManagement();
 
             /* Configure your own tables/entities inside the ConfigureTest method */
+            var entityMethod = typeof(ModelBuilder).GetMethod("Entity");
+            var type = _entityFactory.GetEntity("test");
+            entityMethod.MakeGenericMethod(type)
+                           .Invoke(builder, new object[] { });
 
             builder.ConfigureTest(_entityFactory);
         }

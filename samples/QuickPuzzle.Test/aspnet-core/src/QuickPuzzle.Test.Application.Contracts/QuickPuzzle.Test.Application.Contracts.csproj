@@ -3,12 +3,13 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>QuickPuzzle.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QuickPuzzle.Test.Domain.Shared\QuickPuzzle.Test.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\..\framework\QuickPuzzle.EntityFactory\QuickPuzzle.EntityFactory.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections.Concurrent;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Entities;
 
 namespace QuickPuzzle.EntityFactory
 {
@@ -30,8 +31,8 @@ namespace QuickPuzzle.EntityFactory
                     {
                         var typeBuilder = GetTypeBuilder();
                         var construct = typeBuilder.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
-
-                        CreateProperty(typeBuilder, "Id", typeof(Guid));
+                        typeBuilder.SetParent(typeof(Entity<Guid>));
+                        // CreateProperty(typeBuilder, "Id", typeof(Guid));
                         var type = typeBuilder.CreateType();
                         Entities[name] = type;
                     }
