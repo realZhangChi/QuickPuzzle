@@ -8,7 +8,13 @@ namespace QuickPuzzle.ProjectManagement.Permissions
     {
         public override void Define(IPermissionDefinitionContext context)
         {
-            var myGroup = context.AddGroup(ProjectManagementPermissions.GroupName, L("Permission:ProjectManagement"));
+            var projectManagementGroup = context.AddGroup(ProjectManagementPermissions.GroupName, L("Permission:ProjectManagement"));
+            var projectPermission = projectManagementGroup.AddPermission(ProjectManagementPermissions.Project.Default);
+            projectPermission.AddChild(ProjectManagementPermissions.Project.Get);
+            projectPermission.AddChild(ProjectManagementPermissions.Project.Create);
+            projectPermission.AddChild(ProjectManagementPermissions.Project.Update);
+            projectPermission.AddChild(ProjectManagementPermissions.Project.Delete);
+
         }
 
         private static LocalizableString L(string name)

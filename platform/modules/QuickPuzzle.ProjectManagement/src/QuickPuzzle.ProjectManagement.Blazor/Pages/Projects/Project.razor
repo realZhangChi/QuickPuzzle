@@ -1,0 +1,39 @@
+@page "/project-management/project"
+@attribute [Authorize( ProjectManagementPermissions.Project.Default )]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using global::QuickPuzzle.ProjectManagement.Localization
+@using QuickPuzzle.ProjectManagement.Permissions;
+@using QuickPuzzle.ProjectManagement.Projects;
+@inherits AbpCrudPageBase<IProjectAppService, ProjectDto, Guid, GetProjectsInput, ProjectCreateDto, ProjectUpdateDto>
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Heading Size="HeadingSize.Is1">@L["Projects"]</Heading>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                @if (HasCreatePermission)
+                {
+                    <Button Color="Color.Primary" Clicked="OpenCreateModalAsync">
+                        <Icon Margin="Margin.Is1.FromRight" Name="IconName.Add"></Icon>@L["NewTenant"]
+                    </Button>
+                }
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <DataGrid TItem="ProjectDto" Data="Entities" ReadData="OnDataGridReadAsync" TotalItems="TotalCount"
+            ShowPager="true" PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="ProjectDto" Field="@nameof(ProjectDto.Name)" Caption="@L["ProjectName"].Value">
+                    <DisplayTemplate>
+                        @(context.Name)
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

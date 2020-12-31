@@ -30,7 +30,7 @@ namespace QuickPuzzle.ProjectManagement
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("ProjectManagement", typeof(ProjectManagementResource));
+                options.MapCodeNamespace("ProjectManagement.Projct", typeof(ProjectManagementResource));
             });
         }
     }

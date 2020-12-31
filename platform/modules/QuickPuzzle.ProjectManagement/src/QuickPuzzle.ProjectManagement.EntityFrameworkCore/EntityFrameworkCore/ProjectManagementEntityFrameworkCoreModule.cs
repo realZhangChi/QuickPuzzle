@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using QuickPuzzle.ProjectManagement.Projects;
 
 namespace QuickPuzzle.ProjectManagement.EntityFrameworkCore
 {
@@ -17,6 +18,7 @@ namespace QuickPuzzle.ProjectManagement.EntityFrameworkCore
                 /* Add custom repositories here. Example:
                  * options.AddRepository<Question, EfCoreQuestionRepository>();
                  */
+                options.AddRepository<Project, EfCoreProjectRepository>();
             });
         }
     }

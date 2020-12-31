@@ -1,7 +1,10 @@
 {
-  "culture": "en",
-  "texts": {
-    "ManageYourProfile":  "Manage your profile",
-    "SamplePageMessage": "A sample page for the ProjectManagement module"
-  }
+    "culture": "en",
+    "texts": {
+        "ManageYourProfile": "Manage your profile",
+        "SamplePageMessage": "A sample page for the ProjectManagement module",
+        "Projects": "Projects",
+        "ProjectName": "Project Name",
+        "ProjectManagement.Project:0001": "Project name already exists"
+    }
 }

@@ -5,7 +5,9 @@
         private const string Prefix = "ProjectManagement";
 
         //Add your menu items here...
-        //public const string Home = Prefix + ".MyNewMenuItem";
+        public const string GroupName = Prefix;
+
+        public const string Projects = GroupName + ".Project";
 
     }
 }

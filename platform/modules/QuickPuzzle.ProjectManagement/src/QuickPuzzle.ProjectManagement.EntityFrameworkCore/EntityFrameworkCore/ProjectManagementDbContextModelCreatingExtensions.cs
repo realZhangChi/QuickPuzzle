@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+using QuickPuzzle.ProjectManagement.Projects;
 
 namespace QuickPuzzle.ProjectManagement.EntityFrameworkCore
 {
@@ -38,6 +40,13 @@ namespace QuickPuzzle.ProjectManagement.EntityFrameworkCore
                 b.HasIndex(q => q.CreationTime);
             });
             */
+
+            builder.Entity<Project>(b =>
+            {
+                b.ToTable(options.TablePrefix + nameof(Project), options.Schema);
+
+                b.ConfigureByConvention();
+            });
         }
     }
 }

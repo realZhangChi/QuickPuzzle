@@ -8,13 +8,16 @@ using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
+using Volo.Abp.Identity;
 using Volo.Abp.IdentityServer.ApiResources;
 using Volo.Abp.IdentityServer.ApiScopes;
 using Volo.Abp.IdentityServer.Clients;
 using Volo.Abp.IdentityServer.IdentityResources;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.PermissionManagement;
+using Volo.Abp.TenantManagement;
 using Volo.Abp.Uow;
+using QuickPuzzle.ProjectManagement.Permissions;
 using ApiResource = Volo.Abp.IdentityServer.ApiResources.ApiResource;
 using ApiScope = Volo.Abp.IdentityServer.ApiScopes.ApiScope;
 using Client = Volo.Abp.IdentityServer.Clients.Client;
@@ -198,7 +201,10 @@ namespace QuickPuzzle.IdentityServer
                     requireClientSecret: false,
                     redirectUri: $"{blazorRootUrl}/authentication/login-callback",
                     postLogoutRedirectUri: $"{blazorRootUrl}/authentication/logout-callback",
-                    corsOrigins: new[] { blazorRootUrl.RemovePostFix("/") }
+                    corsOrigins: new[] { blazorRootUrl.RemovePostFix("/") },
+                    permissions: IdentityPermissions.GetAll()
+                        .Union(TenantManagementPermissions.GetAll())
+                        .Union(ProjectManagementPermissions.GetAll())
                 );
             }
 
@@ -210,7 +216,7 @@ namespace QuickPuzzle.IdentityServer
 
                 await CreateClientAsync(
                     name: swaggerClientId,
-                    scopes: commonScopes.Union(new[] { "ProjectManagement" }),
+                    scopes: commonScopes.Union(new[] { "ProjectManagement"}),
                     grantTypes: new[] { "authorization_code" },
                     secret: configurationSection["ProjectManagement_Swagger:ClientSecret"]?.Sha256(),
                     requireClientSecret: false,

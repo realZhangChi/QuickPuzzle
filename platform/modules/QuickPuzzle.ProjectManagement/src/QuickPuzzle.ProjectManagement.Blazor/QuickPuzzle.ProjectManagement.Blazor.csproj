@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+  <Import Project="..\..\..\..\..\configureawait.props" />
+
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
@@ -11,5 +13,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\QuickPuzzle.ProjectManagement.HttpApi.Client\QuickPuzzle.ProjectManagement.HttpApi.Client.csproj" />
+        <ProjectReference Include="..\QuickPuzzle.ProjectManagement.Application.Contracts\QuickPuzzle.ProjectManagement.Application.Contracts.csproj" />
     </ItemGroup>
 </Project>
