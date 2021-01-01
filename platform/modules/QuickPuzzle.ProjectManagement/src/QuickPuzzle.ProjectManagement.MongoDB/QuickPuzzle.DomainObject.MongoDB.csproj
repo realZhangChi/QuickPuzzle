@@ -2,7 +2,8 @@
 
   <Import Project="..\..\..\..\..\configureawait.props" />
 
-  <PropertyGroup>5.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>QuickPuzzle.ProjectManagement</RootNamespace>
   </PropertyGroup>
 
