@@ -3,6 +3,7 @@
         "Blazorise",
         "Consts",
         "Dtos",
+        "Serilog",
         "Volo"
     ]
 }

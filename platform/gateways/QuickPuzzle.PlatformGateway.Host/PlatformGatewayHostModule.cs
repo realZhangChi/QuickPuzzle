@@ -4,6 +4,7 @@ using System.Linq;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,11 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Security.Claims;
+using Volo.Abp.AspNetCore.Serilog;
+using Volo.Abp.Swashbuckle;
+using Volo.Abp.AspNetCore.MultiTenancy;
 using QuickPuzzle.MultiTenancy;
+using QuickPuzzle.ProjectManagement;
 
 namespace QuickPuzzle.PlatformGateway
 {
@@ -58,6 +63,8 @@ namespace QuickPuzzle.PlatformGateway
     [DependsOn(typeof(AbpTenantManagementApplicationModule))]
     [DependsOn(typeof(AbpTenantManagementHttpApiModule))]
     [DependsOn(typeof(AbpTenantManagementEntityFrameworkCoreModule))]
+    [DependsOn(typeof(ProjectManagementHttpApiModule))]
+    [DependsOn(typeof(SharedModule))]
     public class PlatformGatewayHttpApiHostModule : AbpModule
     {
         private const string DefaultCorsPolicyName = "Default";
@@ -73,7 +80,6 @@ namespace QuickPuzzle.PlatformGateway
             ConfigureAuthentication(context, configuration);
             ConfigureDataProtection(context, configuration);
             ConfigureCors(context, configuration);
-            ConfigureCookiePolicy();
             // ConfigureDistributedCache(context, configuration);
             ConfigureOcelot(context, configuration);
         }
@@ -83,42 +89,42 @@ namespace QuickPuzzle.PlatformGateway
             var app = context.GetApplicationBuilder();
             var env = context.GetEnvironment();
 
-            if (env.IsDevelopment())
+            app.UseCookiePolicy(new CookiePolicyOptions
             {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseAbpRequestLocalization();
-
-            if (!env.IsDevelopment())
-            {
-                app.UseErrorPage();
-            }
-
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();
+            app.UseAbpRequestLocalization(option =>
+            {
+                option.DefaultRequestCulture = new RequestCulture("en");
+            });
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
-            app.UseJwtTokenMiddleware();
-
+            app.UseAbpClaimsMap();
             if (MultiTenancyConsts.IsEnabled)
             {
                 app.UseMultiTenancy();
             }
 
-            app.UseIdentityServer();
-            app.UseAuthorization();
-
             app.UseSwagger();
-            app.UseAbpSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlatformGateway API");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Platform Gateway API");
             });
 
-            app.UseAuditing();
-            app.UseAbpSerilogEnrichers();
-            app.UseConfiguredEndpoints();
+            app.MapWhen(
+                ctx => ctx.Request.Path.ToString().StartsWith("/api/abp/") ||
+                       ctx.Request.Path.ToString().StartsWith("/Abp/"),
+                app2 =>
+                {
+                    app2.UseRouting();
+                    app2.UseConfiguredEndpoints();
+                }
+            );
+
+            app.UseOcelot().Wait();
         }
 
         private void ConfigureDbContext()
@@ -133,7 +139,7 @@ namespace QuickPuzzle.PlatformGateway
         {
             Configure<AbpDistributedCacheOptions>(options =>
             {
-                options.KeyPrefix = "ManagementGateway:";
+                options.KeyPrefix = "PlatformGateway:";
             });
 
             context.Services.AddStackExchangeRedisCache(options =>
@@ -156,15 +162,8 @@ namespace QuickPuzzle.PlatformGateway
             {
                 var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
                 context.Services.AddDataProtection()
-                    .PersistKeysToStackExchangeRedis(redis, "ManagementGateway-DataProtection-Keys");
+                    .PersistKeysToStackExchangeRedis(redis, "PlatformGateway-DataProtection-Keys");
             }
-        }
-        private void ConfigureCookiePolicy()
-        {
-            Configure<CookiePolicyOptions>(options =>
-                        {
-                            options.ConfigSameSite();
-                        });
         }
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
@@ -189,16 +188,12 @@ namespace QuickPuzzle.PlatformGateway
                             configuration["AuthServer:Authority"],
                             new Dictionary<string, string>
                             {
-                    {"ManagementGateway", "ManagementGateway API"},
-                    {"TouristAttractions", "TouristAttractions API"},
-                    {"GeneralSettings", "GeneralSettings API"},
-                    {"IdentityManagement", "IdentityManagement API"},
-                    {"PermissionManagement", "PermissionManagement API"},
-                    {"TenantManagement", "TenantManagement API"}
+                    {"PlatformGateway", "PlatformGateway API"},
+                    {"ProjectManagement", "ProjectManagement API"},
                             },
                             options =>
                             {
-                                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Mobile Gateway API", Version = "v1" });
+                                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Platform Gateway API", Version = "v1" });
                                 options.DocInclusionPredicate((docName, description) => true);
                                 options.CustomSchemaIds(type => type.FullName);
                             });

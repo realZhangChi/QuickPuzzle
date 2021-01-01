@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickPuzzle.ProjectManagement.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -9,9 +10,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace QuickPuzzle.ProjectManagement.Migrations
 {
     [DbContext(typeof(ProjectManagementHttpApiHostMigrationsDbContext))]
-    partial class ProjectManagementHttpApiHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210101084817_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

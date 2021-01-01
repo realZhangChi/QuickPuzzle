@@ -3,6 +3,7 @@ using System.Linq;
 using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,7 +78,8 @@ namespace QuickPuzzle
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpAspNetCoreSerilogModule),
-        typeof(AbpSwashbuckleModule)
+        typeof(AbpSwashbuckleModule),
+        typeof(SharedModule)
         )]
     public class QuickPuzzleIdentityServerModule : AbpModule
     {
@@ -184,9 +186,14 @@ namespace QuickPuzzle
             {
                 app.UseErrorPage();
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
+
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();

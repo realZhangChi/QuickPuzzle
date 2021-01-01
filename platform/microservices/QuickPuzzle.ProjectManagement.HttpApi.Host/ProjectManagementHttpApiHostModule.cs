@@ -47,7 +47,8 @@ namespace QuickPuzzle.ProjectManagement
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
         typeof(AbpAspNetCoreSerilogModule),
-        typeof(AbpSwashbuckleModule)
+        typeof(AbpSwashbuckleModule),
+        typeof(SharedModule)
         )]
     public class ProjectManagementHttpApiHostModule : AbpModule
     {

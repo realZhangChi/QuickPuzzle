@@ -77,6 +77,7 @@ namespace QuickPuzzle.Blazor
                 options.UserOptions.RoleClaim = JwtClaimTypes.Role;
                 options.ProviderOptions.DefaultScopes.Add("QuickPuzzle");
                 options.ProviderOptions.DefaultScopes.Add("ProjectManagement");
+                options.ProviderOptions.DefaultScopes.Add("PlatformGateway");
                 options.ProviderOptions.DefaultScopes.Add("role");
                 options.ProviderOptions.DefaultScopes.Add("email");
                 options.ProviderOptions.DefaultScopes.Add("phone");
