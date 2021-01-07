@@ -5,16 +5,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace QuickPuzzle.EntityFrameworkCore
 {
-    public class IdentityServerHostMigrationsDbContextFactory : IDesignTimeDbContextFactory<IdentityServerHostMigrationsDbContext>
+    public class AuthServerHostMigrationsDbContextFactory : IDesignTimeDbContextFactory<AuthServerHostMigrationsDbContext>
     {
-        public IdentityServerHostMigrationsDbContext CreateDbContext(string[] args)
+        public AuthServerHostMigrationsDbContext CreateDbContext(string[] args)
         {
             var configuration = BuildConfiguration();
 
-            var builder = new DbContextOptionsBuilder<IdentityServerHostMigrationsDbContext>()
+            var builder = new DbContextOptionsBuilder<AuthServerHostMigrationsDbContext>()
                 .UseMySql(configuration.GetConnectionString("Default"), ServerVersion.FromString(configuration["ConnectionStrings:ServerVersion"]));
 
-            return new IdentityServerHostMigrationsDbContext(builder.Options);
+            return new AuthServerHostMigrationsDbContext(builder.Options);
         }
 
         private static IConfigurationRoot BuildConfiguration()

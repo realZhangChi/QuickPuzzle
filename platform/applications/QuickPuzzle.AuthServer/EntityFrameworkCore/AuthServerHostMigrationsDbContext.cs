@@ -10,9 +10,9 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace QuickPuzzle.EntityFrameworkCore
 {
-    public class IdentityServerHostMigrationsDbContext : AbpDbContext<IdentityServerHostMigrationsDbContext>
+    public class AuthServerHostMigrationsDbContext : AbpDbContext<AuthServerHostMigrationsDbContext>
     {
-        public IdentityServerHostMigrationsDbContext(DbContextOptions<IdentityServerHostMigrationsDbContext> options)
+        public AuthServerHostMigrationsDbContext(DbContextOptions<AuthServerHostMigrationsDbContext> options)
             : base(options)
         {
 
