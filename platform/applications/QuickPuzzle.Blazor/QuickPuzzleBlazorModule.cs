@@ -78,6 +78,7 @@ namespace QuickPuzzle.Blazor
                 options.ProviderOptions.DefaultScopes.Add("QuickPuzzle");
                 options.ProviderOptions.DefaultScopes.Add("ProjectManagement");
                 options.ProviderOptions.DefaultScopes.Add("PlatformGateway");
+                options.ProviderOptions.DefaultScopes.Add("IdentityServer");
                 options.ProviderOptions.DefaultScopes.Add("role");
                 options.ProviderOptions.DefaultScopes.Add("email");
                 options.ProviderOptions.DefaultScopes.Add("phone");
