@@ -73,6 +73,7 @@ namespace QuickPuzzle.IdentityServer
             await CreateApiScopeAsync("ProjectManagement");
             await CreateApiScopeAsync("PlatformGateway");
             await CreateApiScopeAsync("IdentityServer");
+            await CreateApiScopeAsync("PermissionManagement");
         }
 
         private async Task CreateApiResourcesAsync()
@@ -91,6 +92,7 @@ namespace QuickPuzzle.IdentityServer
             await CreateApiResourceAsync("ProjectManagement", commonApiUserClaims);
             await CreateApiResourceAsync("PlatformGateway", commonApiUserClaims);
             await CreateApiResourceAsync("IdentityServer", commonApiUserClaims);
+            await CreateApiResourceAsync("PermissionManagement", commonApiUserClaims);
         }
 
         private async Task<ApiResource> CreateApiResourceAsync(string name, IEnumerable<string> claims)
@@ -199,7 +201,7 @@ namespace QuickPuzzle.IdentityServer
 
                 await CreateClientAsync(
                     name: blazorClientId,
-                    scopes: commonScopes.Union(new[] { "ProjectManagement", "PlatformGateway", "IdentityServer" }),
+                    scopes: commonScopes.Union(new[] { "ProjectManagement", "PlatformGateway", "IdentityServer", "PermissionManagement" }),
                     grantTypes: new[] { "authorization_code" },
                     secret: configurationSection["QuickPuzzle_Blazor:ClientSecret"]?.Sha256(),
                     requireClientSecret: false,
